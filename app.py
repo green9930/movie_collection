@@ -98,7 +98,7 @@ def welcome():
 # MAIN PAGE ------------------------------------------------------------------ #
 @app.route("/api/like", methods=["POST"])
 def add_like():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["id"]})
@@ -118,7 +118,7 @@ def add_like():
 
 @app.route("/api/like", methods=["DELETE"])
 def delete_like():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["id"]})
@@ -135,7 +135,7 @@ def delete_like():
 # MY PAGE -------------------------------------------------------------------- #
 @app.route("/mypage/<username>")
 def mypage(username):
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         # 내 프로필이면 True
@@ -148,7 +148,7 @@ def mypage(username):
 
 @app.route("/api/movielist", methods=["GET"])
 def get_likes():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["id"]})
