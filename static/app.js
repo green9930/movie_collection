@@ -10,29 +10,36 @@ $(document).ready(() => {
 });
 
 /* SIGN IN ------------------------------------------------------------------ */
-let $useremailin = document.querySelector('#input-useremail-in')
-let $passwordin = document.querySelector('#input-password-in')
+const goToHome = () => {
+  window.location.href = '/';
+};
+
+let $useremailin = document.querySelector('#input-useremail-in');
+let $passwordin = document.querySelector('#input-password-in');
 
 function sign_in() {
-  if ($useremailin.value === "") {
-    alert("아이디를 입력해주세요")
-  } else if ($passwordin.value === "") {
-    alert("비밀번호를 입력해주세요")
+  if ($useremailin.value === '') {
+    alert('아이디를 입력해주세요');
+  } else if ($passwordin.value === '') {
+    alert('비밀번호를 입력해주세요');
   } else {
     $.ajax({
-      type: "POST",
-      url: "/sign_in",
+      type: 'POST',
+      url: '/sign_in',
       data: {
         useremail_give: $useremailin.value,
-        password_give: $passwordin.value
+        password_give: $passwordin.value,
       },
       success: function (response) {
-        console.log(response['result'])
+
+
+
+        console.log(response.result);
         if (response['result'] === 'success') {
           $.cookie('mytoken', response['token'], { path: '/' });
-          window.location.replace("/")
+          window.location.replace('/');
         } else {
-          alert(response['msg'])
+          alert(response['msg']);
         }
       },
     });
@@ -151,7 +158,7 @@ const goToSignUp = () => {
 /* SING OUT ------------------------------------------------------------------ */
 var deleteCookie = function (name) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-}
+};
 
 function signOut() {
   deleteCookie('mytoken');

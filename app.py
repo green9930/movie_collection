@@ -9,24 +9,23 @@ import hashlib
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
+app = Flask(__name__)
+
 # 환경 변수 ---------------------------------------------------------------------- #
 MONGODB_URL = os.getenv("MONGODB_URL")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 ca = certifi.where()
 client = MongoClient(MONGODB_URL, tlsCAFile=ca)
-db = client.imdb99dbprac
-
-app = Flask(__name__)
+db = client.imdb99db
 
 
 @app.route("/")
 def home():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["id"]})
-        print(user_info)
         return render_template("index.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("signin", message="Your login session has expired. Please try again."))
@@ -45,11 +44,9 @@ def signin():
 def sign_in():
     useremail_receive = request.form['useremail_give']
     password_receive = request.form['password_give']
-
-    print(useremail_receive)
-    print(password_receive)
-
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    # print(useremail_receive)
+    # print(password_receive)
 
     result = db.users.find_one(
         {'email': useremail_receive, 'password': pw_hash})
@@ -58,8 +55,11 @@ def sign_in():
             'id': useremail_receive,
             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
+        # JWT 버전 문제 ------------------------------------------------------------------ #
+        # token = jwt.encode(payload, SECRET_KEY,
+        #                    algorithm='HS256').decode('utf-8')
         token = jwt.encode(payload, SECRET_KEY,
-                           algorithm='HS256').decode('utf-8')
+                           algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
