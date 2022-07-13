@@ -164,6 +164,10 @@ function signOut() {
 }
 
 /* MAIN PAGE ---------------------------------------------------------------- */
+const goToMainPage = () => {
+  window.location.href = '/';
+};
+
 const TMDB_KEY = 'b8732a28012043cd71b5f3b9a7424308';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const BASE_LANG = 'ko';
@@ -173,11 +177,6 @@ const POPULAR_MOVIES = `${BASE_URL}/movie/popular?api_key=${TMDB_KEY}&language=$
 const getImageUrl = (path, size = 300) => {
   return `https://image.tmdb.org/t/p/w${size}${path}`;
 };
-
-const main = document.getElementById('main');
-const form = document.getElementById('form');
-const search = document.getElementById('search');
-getMovies(API_URL);
 
 /* 영화 API 호출 ---------------------------------------------------------------- */
 const fetchData = async (url) => {
@@ -312,7 +311,6 @@ $(document).on('click', '.mymovie-delete-btn', (e) => {
   handleDeleteLike(targetMovie);
   fetchData(POPULAR_MOVIES);
 });
-
 /* DB TEST ------------------------------------------------------------------ */
 const dbTestPost = () => {
   // input 입력 내용
