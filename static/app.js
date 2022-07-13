@@ -155,13 +155,20 @@ function view_pw(event) {
 }
 
 /* SIGN OUT ------------------------------------------------------------------ */
-var deleteCookie = function (name) {
-  document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-};
+// var deleteCookie = function (name) {
+//   document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+// };
 
-function signOut() {
-  deleteCookie('mytoken');
-}
+// function signOut() {
+//   deleteCookie('mytoken');
+// }
+
+/* SIGN OUT 임시함수 --------------------------------------------------------- */
+const handleSignOut = () => {
+  $.removeCookie('token', { path: '/' });
+  alert('SUCCESS : SIGN OUT');
+  window.location.href = '/signin';
+};
 
 /* MAIN PAGE ---------------------------------------------------------------- */
 const goToMainPage = () => {
