@@ -1,23 +1,72 @@
 import requests
-from flask import Flask, render_template, request, jsonify
-from bs4 import BeautifulSoup
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 import certifi
 from dotenv import load_dotenv
 import os
+import jwt
+import hashlib
+from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
-app = Flask(__name__)
-
-MONGODB_URL = os.getenv('MONGODB_URL')
+# 환경 변수 ---------------------------------------------------------------------- #
+MONGODB_URL = os.getenv("MONGODB_URL")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 ca = certifi.where()
 client = MongoClient(MONGODB_URL, tlsCAFile=ca)
-db = client.imdb99db
+db = client.imdb99dbprac
+
+app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        print(user_info)
+        return render_template("index.html", user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("signin", message="Your login session has expired. Please try again."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("signin", message="Your account information does not exist. Please try again."))
+
+
+# SIGN IN -------------------------------------------------------------------- #
+@app.route("/signin")
+def signin():
+    message = request.args.get("message")
+    return render_template("signin.html", message=message)
+
+
+# SIGN UP -------------------------------------------------------------------- #
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
+
+
+# WELCOME -------------------------------------------------------------------- #
+@app.route("/welcome")
+def welcome():
+    return render_template("welcome.html")
+
+
+# MAIN PAGE ------------------------------------------------------------------ #
+
+# MY PAGE -------------------------------------------------------------------- #
+@app.route("/mypage/<username>")
+def mypage(username):
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        # 내 프로필이면 True
+        status = (username == payload["id"])
+        user_info = db.users.find_one({"username": username}, {"_id": False})
+        return render_template("mypage.html", user_info=user_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 # DB TEST -------------------------------------------------------------------- #
