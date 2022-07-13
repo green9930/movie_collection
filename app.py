@@ -45,8 +45,6 @@ def sign_in():
     useremail_receive = request.form['useremail_give']
     password_receive = request.form['password_give']
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    # print(useremail_receive)
-    # print(password_receive)
 
     result = db.users.find_one(
         {'email': useremail_receive, 'password': pw_hash})
@@ -157,19 +155,3 @@ def get_likes():
         return jsonify({"movielist": movie_list, "message": "SUCCESS : GET LIKE"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
-
-# DB TEST -------------------------------------------------------------------- #
-@app.route('/dbtest', methods=['POST'])
-def dbtest_post():
-    text_receive = request.form['text_give']
-
-    doc = {
-        'text': text_receive,
-    }
-    db.testdb.insert_one(doc)
-    return jsonify({'msg': 'MONGODB TEST SUCCESS'})
-
-
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)

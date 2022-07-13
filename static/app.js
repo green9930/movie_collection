@@ -311,17 +311,3 @@ $(document).on('click', '.mymovie-delete-btn', (e) => {
   handleDeleteLike(targetMovie);
   fetchData(POPULAR_MOVIES);
 });
-/* DB TEST ------------------------------------------------------------------ */
-const dbTestPost = () => {
-  // input 입력 내용
-  let text = $('.dbtest-input').val();
-  console.log(text);
-  $.ajax({
-    type: 'POST',
-    url: '/dbtest',
-    data: { text_give: text },
-    success: (res) => {
-      alert(res['msg']);
-    },
-  });
-};
