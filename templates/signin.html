@@ -23,14 +23,29 @@
     <title>IMDb99 | SIGN IN</title>
   </head>
   <body>
-    <h1>SIGN IN</h1>
+    <h1 class="imdb-title">IMDb99</h1>
+    <h2 class="a11y-hidden">SIGN IN</h2>
     <div>
-      <form action="">
-        <input id="input-useremail-in" type="email" placeholder="ID">
-        <input id="input-password-in" type="password" placeholder="PW">
-      </form>
-      <button onclick="sign_in()">SIGN IN</button>
-      <button onclick="goToSignUp()">SIGN UP</button>
+      <div class="signin-wrapper">
+        <input
+          id="input-useremail-in"
+          class="signin-email-input"
+          type="email"
+          placeholder="email"
+          required
+        />
+        <input
+          id="input-password-in"
+          class="signin-password-input"
+          type="password"
+          placeholder="password"
+          required
+        />
+      </div>
+      <div class="signin-btn-wrapper">
+        <button class="signin-btn" onclick="sign_in()">SIGN IN</button>
+        <button class="signin-btn" onclick="goToSignUp()">SIGN UP</button>
+      </div>
     </div>
   </body>
 </html>

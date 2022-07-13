@@ -45,8 +45,6 @@ def sign_in():
     useremail_receive = request.form['useremail_give']
     password_receive = request.form['password_give']
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    # print(useremail_receive)
-    # print(password_receive)
 
     result = db.users.find_one(
         {'email': useremail_receive, 'password': pw_hash})
@@ -96,11 +94,46 @@ def welcome():
 
 
 # MAIN PAGE ------------------------------------------------------------------ #
+@app.route("/api/like", methods=["POST"])
+def add_like():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        targetmovie_receive = request.form["targetmovie_give"]
+
+        doc = {
+            "email": user_info["email"],
+            "movie": targetmovie_receive,
+        }
+
+        db.likes.insert_one(doc)
+
+        return jsonify({"message": "SUCCESS : UPDATE LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+@app.route("/api/like", methods=["DELETE"])
+def delete_like():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        targetmovie_receive = request.form["targetmovie_give"]
+
+        db.likes.delete_one({"movie": targetmovie_receive,
+                            "email": user_info["email"]})
+
+        return jsonify({"message": "SUCCESS : DELETE LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 # MY PAGE -------------------------------------------------------------------- #
 @app.route("/mypage/<username>")
 def mypage(username):
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("mytoken")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         # 내 프로필이면 True
@@ -111,17 +144,14 @@ def mypage(username):
         return redirect(url_for("home"))
 
 
-# DB TEST -------------------------------------------------------------------- #
-@app.route('/dbtest', methods=['POST'])
-def dbtest_post():
-    text_receive = request.form['text_give']
-
-    doc = {
-        'text': text_receive,
-    }
-    db.testdb.insert_one(doc)
-    return jsonify({'msg': 'MONGODB TEST SUCCESS'})
-
-
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+@app.route("/api/movielist", methods=["GET"])
+def get_likes():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        movie_list = list(db.likes.find({"email": user_info["email"]}, {"_id":
+                                                                        False}))
+        return jsonify({"movielist": movie_list, "message": "SUCCESS : GET LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))

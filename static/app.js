@@ -6,12 +6,17 @@ const test = () => {
 /* app.js ------------------------------------------------------------------- */
 $(document).ready(() => {
   // 페이지 로딩 후 바로 들어오는 GET 함수는 이곳에서 호출
-  test();
+  fetchData(POPULAR_MOVIES);
 });
 
-/* SIGN IN ------------------------------------------------------------------ */
 const goToHome = () => {
   window.location.href = '/';
+};
+
+/* SIGN IN ------------------------------------------------------------------ */
+
+const goToSignIn = () => {
+  window.location.href = '/signin';
 };
 
 let $useremailin = document.querySelector('#input-useremail-in');
@@ -31,9 +36,6 @@ function sign_in() {
         password_give: $passwordin.value,
       },
       success: function (response) {
-
-
-
         console.log(response.result);
         if (response['result'] === 'success') {
           $.cookie('mytoken', response['token'], { path: '/' });
@@ -46,10 +48,11 @@ function sign_in() {
   }
 }
 
-const goToSignIn = () => {
-  window.location.href = '/signin';
-};
 /* SIGN UP ------------------------------------------------------------------ */
+const goToSignUp = () => {
+  window.location.href = '/signup';
+};
+
 const $useremail = document.querySelector('#input-useremail');
 const $username = document.querySelector('#input-username');
 const $password = document.querySelector('#input-password');
@@ -151,105 +154,167 @@ function view_pw(event) {
   }
 }
 
-const goToSignUp = () => {
-  window.location.href = '/signup';
-};
+/* SIGN OUT ------------------------------------------------------------------ */
+// var deleteCookie = function (name) {
+//   document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+// };
 
-/* SING OUT ------------------------------------------------------------------ */
-var deleteCookie = function (name) {
-  document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-};
+// function signOut() {
+//   deleteCookie('mytoken');
+// }
 
-function signOut() {
-  deleteCookie('mytoken');
-}
-/* WELCOME ------------------------------------------------------------------ */
+/* SIGN OUT 임시함수 --------------------------------------------------------- */
+const handleSignOut = () => {
+  $.removeCookie('token', { path: '/' });
+  alert('SUCCESS : SIGN OUT');
+  window.location.href = '/signin';
+};
 
 /* MAIN PAGE ---------------------------------------------------------------- */
-const API_key = 'api_key=8d69572b5ca92713ccc14e37f2fdea14';
+const goToMainPage = () => {
+  window.location.href = '/';
+};
+
+const TMDB_KEY = 'b8732a28012043cd71b5f3b9a7424308';
 const BASE_URL = 'https://api.themoviedb.org/3';
-const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'
-    + API_key;
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-const searchURL = BASE_URL + '/search/movie?' + API_key;
+const BASE_LANG = 'ko';
+const BASE_REGION = 'KR';
+const POPULAR_MOVIES = `${BASE_URL}/movie/popular?api_key=${TMDB_KEY}&language=${BASE_LANG}&region=${BASE_REGION}`;
 
-const main = document.getElementById('main');
-const form = document.getElementById('form');
-const search = document.getElementById('search');
-getMovies(API_URL);
+const getImageUrl = (path, size = 300) => {
+  return `https://image.tmdb.org/t/p/w${size}${path}`;
+};
 
-function getMovies(url) {
-
-  fetch(url).then(res => res.json()).then(data => {
-    console.log(data.results)
-    console.log(data)
-    showMovies(data.results);
-  })
-}
-
-function showMovies(data) {
-  main.innerHTML = ``;
-
-  data.forEach(movie => {
-    console.log(movie.vote_average)
-    const {title, poster_path, vote_average, overview} = movie;
-    console.log(vote_average)
-    const movieE1 = document.createElement('div');
-    movieE1.classList.add('movie');
-    console.log('잘 나옴?')
-    movieE1.innerHTML = `
-                <img src="${IMG_URL + poster_path}" alt="${title}">
-
-                <div class="movie-info">
-                <h3>Movie Title</h3>
-                <span class="${getColor(vote_average)}">${vote_average}</span>
-                </div>
-
-                <div class="overview">
-
-                    <h3>overview</h3>
-                    ${overview}
-                </div>`
-
-    main.appendChild(movieE1);
-
-  })
-}
-
-function getColor(vote) {
-  if (vote >= 8) {
-    return 'green'
-  } else if (vote >= 5) {
-    return "orange"
-  } else {
-    return 'red'
+/* 영화 API 호출 ---------------------------------------------------------------- */
+const fetchData = async (url) => {
+  try {
+    const response = await fetch(url);
+    const jsonData = await response.json();
+    setMovieList(jsonData.results);
+    setMyMovieList(jsonData.results);
+  } catch (err) {
+    console.error(err);
   }
-}
+};
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+const setMovieList = (movies) => {
+  $.ajax({
+    type: 'GET',
+    url: '/api/movielist',
+    data: {},
+    success: (res) => {
+      console.log(res.message);
+    },
+  }).then((res) => {
+    const mymovies = res.movielist;
+    const movieArr = mymovies.map((movie) => {
+      return parseInt(movie.movie);
+    });
 
-  const searchTerm = search.value;
-  if (searchTerm) {
-    getMovies(searchURL + '&query' + searchTerm)
-  } else {
-    getMovies(API_URL);
-  }
+    let arr = [];
 
-})
-/* MY PAGE ------------------------------------------------------------------ */
+    movies.map((movie) => {
+      const movieId = movie.id;
+      const isTarget = movieArr.includes(movieId);
+      arr.push({ ...movie, isChecked: isTarget });
+    });
 
-/* DB TEST ------------------------------------------------------------------ */
-const dbTestPost = () => {
-  // input 입력 내용
-  let text = $('.dbtest-input').val();
-  console.log(text);
+    printMovieList(arr);
+  });
+};
+
+const printMovieList = (arr) => {
+  $('.movie-list').empty();
+  arr.map((item) => {
+    const { title, original_title, poster_path, id, isChecked } = item;
+    const checked = isChecked ? 'checked' : '';
+    let movie_html = `<li class=${id}>
+                        <img class="movie-poster" src=${getImageUrl(
+                          poster_path
+                        )} alt="movie poster" />
+                        <span>${title}</span>
+                        <span>${original_title}</span>
+                        <label for="movie-checkbox">LIKE</label>
+                        <input type="checkbox" id="movie-checkbox" class="movie-like-btn"} ${checked}/>
+                      </li>`;
+    $('.movie-list').append(movie_html);
+  });
+};
+
+$(document).on('change', '.movie-like-btn', (e) => {
+  const isLike = e.target.checked;
+  const targetMovie = e.target.parentElement.classList[0];
+  isLike ? handleAddLike(targetMovie) : handleDeleteLike(targetMovie);
+});
+
+const handleAddLike = (targetMovie) => {
   $.ajax({
     type: 'POST',
-    url: '/dbtest',
-    data: { text_give: text },
+    url: '/api/like',
+    data: {
+      targetmovie_give: targetMovie,
+    },
     success: (res) => {
-      alert(res['msg']);
+      console.log(res.message);
+      fetchData(POPULAR_MOVIES);
     },
   });
 };
+
+const handleDeleteLike = (targetMovie) => {
+  $.ajax({
+    type: 'DELETE',
+    url: '/api/like',
+    data: {
+      targetmovie_give: targetMovie,
+    },
+    success: (res) => {
+      console.log(res.message);
+      fetchData(POPULAR_MOVIES);
+    },
+  });
+};
+
+/* MY PAGE ------------------------------------------------------------------ */
+const goToMyPage = () => {
+  window.location.href = '/mypage';
+};
+
+const setMyMovieList = (movies) => {
+  $.ajax({
+    type: 'GET',
+    url: '/api/movielist',
+    data: {},
+    success: (res) => {
+      console.log(res.message);
+    },
+  }).then((res) => {
+    const mymovies = res.movielist;
+    const arr = mymovies.map((item) => {
+      return movies.filter((movie) => movie.id === parseInt(item.movie));
+    });
+    printMyMovieList(arr);
+  });
+};
+
+const printMyMovieList = (arr) => {
+  $('.mymovie-list').empty();
+  arr.map((item) => {
+    const { id, poster_path, title, original_title } = item[0];
+    const movie_html = `<li class=${id}>
+                          <img class="movie-poster" src=${getImageUrl(
+                            poster_path
+                          )} alt="movie poster" />
+                            <span>${title}</span>
+                            <span>${original_title}</span>
+                            <button class="mymovie-delete-btn">X</button>
+                        </li>`;
+    $('.mymovie-list').append(movie_html);
+  });
+};
+
+$(document).on('click', '.mymovie-delete-btn', (e) => {
+  const targetMovie = e.target.parentElement.classList[0];
+  handleDeleteLike(targetMovie);
+  fetchData(POPULAR_MOVIES);
+});
