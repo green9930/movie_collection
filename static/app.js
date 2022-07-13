@@ -10,7 +10,33 @@ $(document).ready(() => {
 });
 
 /* SIGN IN ------------------------------------------------------------------ */
+let $useremailin = document.querySelector('#input-useremail-in')
+let $passwordin = document.querySelector('#input-password-in')
 
+function sign_in() {
+  if ($useremailin.value === "") {
+    alert("아이디를 입력해주세요")
+  } else if ($passwordin.value === "") {
+    alert("비밀번호를 입력해주세요")
+  } else {
+    $.ajax({
+      type: "POST",
+      url: "/sign_in",
+      data: {
+        useremail_give: $useremailin.value,
+        password_give: $passwordin.value
+      },
+      success: function (response) {
+        if (response['result'] == 'success') {
+          $.cookie('mytoken', response['token'], { path: '/' });
+          window.location.replace("/")
+        } else {
+          alert(response['msg'])
+        }
+      },
+    });
+  }
+}
 /* SIGN UP ------------------------------------------------------------------ */
 const $useremail = document.querySelector('#input-useremail');
 const $username = document.querySelector('#input-username');
@@ -77,7 +103,7 @@ function sign_up() {
       },
       success: function (response) {
         alert(response['msg']);
-        window.location.replace('/');
+        window.location.replace('/welcome');
       },
     });
   }
