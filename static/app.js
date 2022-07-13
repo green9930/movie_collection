@@ -27,7 +27,7 @@ function sign_in() {
         password_give: $passwordin.value
       },
       success: function (response) {
-        if (response['result'] == 'success') {
+        if (response['result'] === 'success') {
           $.cookie('mytoken', response['token'], { path: '/' });
           window.location.replace("/")
         } else {
@@ -37,6 +37,10 @@ function sign_in() {
     });
   }
 }
+
+const goToSignIn = () => {
+  window.location.href = '/signin';
+};
 /* SIGN UP ------------------------------------------------------------------ */
 const $useremail = document.querySelector('#input-useremail');
 const $username = document.querySelector('#input-username');
@@ -142,6 +146,15 @@ function view_pw(event) {
 const goToSignUp = () => {
   window.location.href = '/signup';
 };
+
+/* SING OUT ------------------------------------------------------------------ */
+var deleteCookie = function (name) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+}
+
+function signOut() {
+  deleteCookie('mytoken');
+}
 /* WELCOME ------------------------------------------------------------------ */
 
 /* MAIN PAGE ---------------------------------------------------------------- */
