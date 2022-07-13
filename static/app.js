@@ -270,6 +270,48 @@ const handleDeleteLike = (targetMovie) => {
 };
 
 /* MY PAGE ------------------------------------------------------------------ */
+const goToMyPage = () => {
+  window.location.href = '/mypage';
+};
+
+const setMyMovieList = (movies) => {
+  $.ajax({
+    type: 'GET',
+    url: '/api/movielist',
+    data: {},
+    success: (res) => {
+      console.log(res.message);
+    },
+  }).then((res) => {
+    const mymovies = res.movielist;
+    const arr = mymovies.map((item) => {
+      return movies.filter((movie) => movie.id === parseInt(item.movie));
+    });
+    printMyMovieList(arr);
+  });
+};
+
+const printMyMovieList = (arr) => {
+  $('.mymovie-list').empty();
+  arr.map((item) => {
+    const { id, poster_path, title, original_title } = item[0];
+    const movie_html = `<li class=${id}>
+                          <img class="movie-poster" src=${getImageUrl(
+                            poster_path
+                          )} alt="movie poster" />
+                            <span>${title}</span>
+                            <span>${original_title}</span>
+                            <button class="mymovie-delete-btn">X</button>
+                        </li>`;
+    $('.mymovie-list').append(movie_html);
+  });
+};
+
+$(document).on('click', '.mymovie-delete-btn', (e) => {
+  const targetMovie = e.target.parentElement.classList[0];
+  handleDeleteLike(targetMovie);
+  fetchData(POPULAR_MOVIES);
+});
 
 /* DB TEST ------------------------------------------------------------------ */
 const dbTestPost = () => {
