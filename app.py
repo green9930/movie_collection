@@ -146,6 +146,19 @@ def mypage(username):
         return redirect(url_for("home"))
 
 
+@app.route("/api/movielist", methods=["GET"])
+def get_likes():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        movie_list = list(db.likes.find({"email": user_info["email"]}, {"_id":
+                                                                        False}))
+        return jsonify({"movielist": movie_list, "message": "SUCCESS : GET LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
 # DB TEST -------------------------------------------------------------------- #
 @app.route('/dbtest', methods=['POST'])
 def dbtest_post():
