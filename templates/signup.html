@@ -25,22 +25,23 @@
   <body>
     <h1>SIGN UP</h1>
     <form action="">
-      <span>
+      <div>
         <input id="input-useremail" type="email" placeholder="이메일을 입력하세요">
-        <div><p id="emailmsg"></p></div>
-      </span>
-      <span>
+        <div><span id="emailmsg"></span></div>
+      </div>
+      <div>
         <input id="input-username" type="text" maxlength="6" placeholder="사용할 닉네임을 입력하세요">
-        <div><p id="namemsg"></p></div>
-      </span>
-      <span>
+        <div><span id="namemsg"></span></div>
+      </div>
+      <div>
         <input id="input-password" type="password" maxlength="20" placeholder="비밀번호를 입력하세요">
-        <div><p id="pwmsg1"></p></div>
-      </span>
-      <span>
+        <button type="button" class="view-pw" onclick="view_pw(this)">확인</button>
+        <div><span id="pwmsg1"></span></div>
+      </div>
+      <div>
         <input id="input-password2" type="password" maxlength="20" placeholder="확인용 비밀번호를 입력하세요" >
-        <div><p id="pwmsg2"></p></div>
-      </span>
+        <div><span id="pwmsg2"></span></div>
+      </div>
     </form>
     <button onclick="sign_up()">회원가입</button>
   </body>
