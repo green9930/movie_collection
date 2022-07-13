@@ -41,6 +41,32 @@ def signin():
     return render_template("signin.html", message=message)
 
 
+@app.route('/sign_in', methods=['POST'])
+def sign_in():
+    useremail_receive = request.form['useremail_give']
+    password_receive = request.form['password_give']
+
+    print(useremail_receive)
+    print(password_receive)
+
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+
+    result = db.users.find_one(
+        {'email': useremail_receive, 'password': pw_hash})
+    if result is not None:
+        payload = {
+            'id': useremail_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        }
+        token = jwt.encode(payload, SECRET_KEY,
+                           algorithm='HS256').decode('utf-8')
+
+        return jsonify({'result': 'success', 'token': token})
+    # 찾지 못하면
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+
 # SIGN UP -------------------------------------------------------------------- #
 @app.route("/signup")
 def signup():
