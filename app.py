@@ -96,6 +96,41 @@ def welcome():
 
 
 # MAIN PAGE ------------------------------------------------------------------ #
+@app.route("/api/like", methods=["POST"])
+def add_like():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        targetmovie_receive = request.form["targetmovie_give"]
+
+        doc = {
+            "email": user_info["email"],
+            "movie": targetmovie_receive,
+        }
+
+        db.likes.insert_one(doc)
+
+        return jsonify({"message": "SUCCESS : UPDATE LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+@app.route("/api/like", methods=["DELETE"])
+def delete_like():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        targetmovie_receive = request.form["targetmovie_give"]
+
+        db.likes.delete_one({"movie": targetmovie_receive,
+                            "email": user_info["email"]})
+
+        return jsonify({"message": "SUCCESS : DELETE LIKE"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 # MY PAGE -------------------------------------------------------------------- #
 @app.route("/mypage/<username>")
