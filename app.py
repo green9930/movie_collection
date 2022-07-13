@@ -47,6 +47,22 @@ def signup():
     return render_template("signup.html")
 
 
+@app.route('/signup/save', methods=['POST'])
+def sign_up():
+    useremail_receive = request.form['useremail_give']
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+    password_hash = hashlib.sha256(
+        password_receive.encode('utf-8')).hexdigest()
+    doc = {
+        "email": useremail_receive,
+        "username": username_receive,
+        "password": password_hash,
+    }
+    db.users.insert_one(doc)
+    return jsonify({'msg': '가입완료'})
+
+
 # WELCOME -------------------------------------------------------------------- #
 @app.route("/welcome")
 def welcome():
