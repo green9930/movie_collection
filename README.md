@@ -1,7 +1,7 @@
-![KakaoTalk_Photo_2022-07-14-18-54-02](https://user-images.githubusercontent.com/104121549/178957407-828fe98c-f50d-4b77-880a-d0057dd249ea.png)
-
 
 # 항해99 8기 D반 1조 : 1주차 미니프로젝트 : IMDb99
+![KakaoTalk_Photo_2022-07-14-18-54-02](https://user-images.githubusercontent.com/104121549/178957407-828fe98c-f50d-4b77-880a-d0057dd249ea.png)
+
 
 ## 팀원
 ### 배근아 
