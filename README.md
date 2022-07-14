@@ -1,5 +1,5 @@
 
-![KakaoTalk_Photo_2022-07-14-18-54-02](https://user-images.githubusercontent.com/104121549/178955930-75ed870e-b724-4fd5-ab13-8a024e82d516.png)
+<img width="80%" src="https://user-images.githubusercontent.com/104121549/178955930-75ed870e-b724-4fd5-ab13-8a024e82d516.gif"/>
 
 # 항해99 8기 D반 1조 : 1주차 미니프로젝트 : IMDb99
 
