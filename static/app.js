@@ -146,24 +146,21 @@ function is_username2(asValue) {
 }
 
 function view_pw(event) {
+  $('.view-pw').empty();
   let target = event.parentElement.children[0];
+  let imgsrc = '';
   if (target.type === 'password') {
     target.type = 'text';
+    imgsrc = '../static/images/eye-closed-svgrepo-com.svg';
   } else {
     target.type = 'password';
+    imgsrc = '../static/images/open-eye.png';
   }
+  let img_html = `<img src="${imgsrc}" class="view-pw-img" alt="password-visible" />`;
+  $('.view-pw').append(img_html);
 }
 
 /* SIGN OUT ------------------------------------------------------------------ */
-// var deleteCookie = function (name) {
-//   document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-// };
-
-// function signOut() {
-//   deleteCookie('mytoken');
-// }
-
-/* SIGN OUT 임시함수 --------------------------------------------------------- */
 const handleSignOut = () => {
   $.removeCookie('token', { path: '/' });
   alert('SUCCESS : SIGN OUT');
@@ -228,22 +225,47 @@ const printMovieList = (arr) => {
   arr.map((item) => {
     const { title, original_title, poster_path, id, isChecked } = item;
     const checked = isChecked ? 'checked' : '';
-    let movie_html = `<li class=${id}>
+    const isVisible = isChecked ? 'isVisible' : '';
+    const isColored = isChecked ? 'isColored' : '';
+    let movie_html = `<li class="movie-item">
                         <img class="movie-poster" src=${getImageUrl(
                           poster_path
                         )} alt="movie poster" />
-                        <span>${title}</span>
-                        <span>${original_title}</span>
-                        <label for="movie-checkbox">LIKE</label>
-                        <input type="checkbox" id="movie-checkbox" class="movie-like-btn"} ${checked}/>
+                        <div class="movie-subbox ${isVisible}">
+                          <span class="movie-like-message ${isColored}">I LIKE THIS MOVIE</span>
+                          <span class="movie-title">${title}</span>
+                          <span class="movie-original-title">${original_title}</span>
+                          <div class="like-wrapper">
+                            <span class="movie-like-text">LIKE</span>
+                            <label class="movie-like-label a11y-hidden" for="movie-checkbox">LIKE</label>
+                            <input type="checkbox" id="movie-checkbox" class="${id} movie-like-btn"} ${checked}/>
+                          </div>
+                        </div>
                       </li>`;
     $('.movie-list').append(movie_html);
   });
 };
 
+$(document).on('click', '.movie-poster', (e) => {
+  e.target.nextElementSibling.classList.add('isVisible');
+});
+
+$(document).on('click', '.isVisible', (e) => {
+  !e.target.firstElementChild.classList.contains('isColored') &&
+    e.target.classList.remove('isVisible');
+});
+
 $(document).on('change', '.movie-like-btn', (e) => {
   const isLike = e.target.checked;
-  const targetMovie = e.target.parentElement.classList[0];
+  isLike
+    ? e.target.parentElement.parentElement.firstElementChild.classList.add(
+        'isColored'
+      )
+    : e.target.parentElement.parentElement.firstElementChild.classList.remove(
+        'isColored'
+      );
+
+  const targetMovie = e.target.classList[0];
   isLike ? handleAddLike(targetMovie) : handleDeleteLike(targetMovie);
 });
 
@@ -290,31 +312,47 @@ const setMyMovieList = (movies) => {
     },
   }).then((res) => {
     const mymovies = res.movielist;
-    const arr = mymovies.map((item) => {
-      return movies.filter((movie) => movie.id === parseInt(item.movie));
-    });
-    printMyMovieList(arr);
+    if (mymovies.length) {
+      const arr = mymovies.map((item) => {
+        return movies.filter((movie) => movie.id === parseInt(item.movie));
+      });
+      printMyMovieList(arr);
+    } else {
+      printEmptyMessage();
+    }
   });
 };
 
+/* 좋아요 누른 영화 목록 출력 ---------------------------------------------------------- */
 const printMyMovieList = (arr) => {
   $('.mymovie-list').empty();
   arr.map((item) => {
     const { id, poster_path, title, original_title } = item[0];
-    const movie_html = `<li class=${id}>
+    const movie_html = `<li class="movie-item">
                           <img class="movie-poster" src=${getImageUrl(
                             poster_path
                           )} alt="movie poster" />
-                            <span>${title}</span>
-                            <span>${original_title}</span>
-                            <button class="mymovie-delete-btn">X</button>
+                          <div class="movie-subbox">
+                            <span class="movie-title">${title}</span>
+                            <span class="movie-original-title">${original_title}</span>
+                            <button class="${id} mymovie-delete-btn">DELETE</button>
+                          </div>
                         </li>`;
     $('.mymovie-list').append(movie_html);
   });
 };
 
+/* 좋아요 누른 영화가 없는 경우 --------------------------------------------------------- */
+const printEmptyMessage = () => {
+  $('.mymovie-wrapper').empty();
+  const empty_html = `<div class="empty-container">
+  <span class="empty-message">Your Movie List is empty.</span>
+  </div>`;
+  $('.mymovie-wrapper').append(empty_html);
+};
+
 $(document).on('click', '.mymovie-delete-btn', (e) => {
-  const targetMovie = e.target.parentElement.classList[0];
+  const targetMovie = e.target.classList[0];
   handleDeleteLike(targetMovie);
   fetchData(POPULAR_MOVIES);
 });

@@ -13,6 +13,10 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Titillium+Web:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <!-- CSS ------------------------------------------------------------------- -->
     <link rel="stylesheet" href="../static/style.css" />
     <!-- JAVASCRIPT ------------------------------------------------------------ -->
@@ -23,20 +27,22 @@
     <title>IMDb99 | SIGN IN</title>
   </head>
   <body>
-    <h1 class="imdb-title">IMDb99</h1>
-    <h2 class="a11y-hidden">SIGN IN</h2>
-    <div>
+    <nav class="imdb-nav">
+      <h1 class="imdb-title" onclick="goToHome()">IMDb99</h1>
+      <h2 class="a11y-hidden">SIGN IN</h2>
+    </nav>
+    <div class="signin-container">
       <div class="signin-wrapper">
         <input
           id="input-useremail-in"
-          class="signin-email-input"
+          class="signin-email-input signin-input"
           type="email"
           placeholder="email"
           required
         />
         <input
           id="input-password-in"
-          class="signin-password-input"
+          class="signin-password-input signin-input"
           type="password"
           placeholder="password"
           required
@@ -47,5 +53,89 @@
         <button class="signin-btn" onclick="goToSignUp()">SIGN UP</button>
       </div>
     </div>
+    <div class="welcome-container">
+      <div class="welcome-wrapper">
+        <span class="welcome-message1">Welcome to </span>
+        <h1 class="imdb-welcome-title">IMDb99</h1>
+      </div>
+      <div class="welcome-subwrapper">
+        <span class="welcome-message2"
+          >Explore the most
+          <span class="yellow_text">popular movies</span> now,</span
+        >
+        <span class="welcome-message3"
+          >Make your own <span class="yellow_text">movie list</span>!</span
+        >
+      </div>
+    </div>
   </body>
+  <footer class="footer-container">
+    <div class="footer-wrapper">
+      <h1 class="imdb-footer-title">IMDb99</h1>
+      <div class="footer-info-container">
+        <span class="footer-info-message1"
+          >This is Sparta Coding Club Hanghae99 Project</span
+        >
+        <span class="footer-info-message2">
+          What is Hanghae99?
+          <a
+            class="footer-info-link"
+            href="https://spartacodingclub.kr/"
+            target="_blank"
+            >https://spartacodingclub.kr/</a
+          >
+        </span>
+        <span class="footer-info-message3"
+          >Reference |
+          <a
+            class="footer-info-link"
+            href="https://www.imdb.com/"
+            target="_blank"
+            >https://www.imdb.com/</a
+          ></span
+        >
+        <span class="footer-info-message4"
+          >Copyright © 2022 All rights reserved.</span
+        >
+      </div>
+      <ul class="github-list">
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/green9930"
+            target="_blank"
+          >
+            <img
+              src="../static/images/github-logo.svg"
+              alt="github-green9930"
+            />
+            <span class="author-name">GEUNA</span>
+          </a>
+        </li>
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/mrobo3"
+            target="_blank"
+          >
+            <img src="../static/images/github-logo.svg" alt="github-mrobo3" />
+            <span class="author-name">JUNGHOON</span>
+          </a>
+        </li>
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/PhiloMonx1"
+            target="_blank"
+          >
+            <img
+              src="../static/images/github-logo.svg"
+              alt="github-PhiloMonx1"
+            />
+            <span class="author-name">TAEMIN</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
 </html>

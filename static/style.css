@@ -1,4 +1,5 @@
 @import url('./reset.css');
+@import url('./common.css');
 @import url('./movielist.css');
 @import url('./mypage.css');
 @import url('./signin.css');
