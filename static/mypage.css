@@ -1,0 +1,26 @@
+.mymovie-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.mymovie-delete-btn {
+  position: absolute;
+  bottom: 5%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-weight: 600;
+  color: #f5c518;
+}
+
+.empty-container {
+  margin-top: 20rem;
+}
+
+.empty-message {
+  font-size: 3rem;
+  font-weight: 700;
+}

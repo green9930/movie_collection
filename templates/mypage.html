@@ -13,6 +13,10 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Titillium+Web:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <!-- CSS ------------------------------------------------------------------- -->
     <link rel="stylesheet" href="../static/style.css" />
     <!-- JAVASCRIPT ------------------------------------------------------------ -->
@@ -23,15 +27,89 @@
     <title>IMDb99 | MY PAGE</title>
   </head>
   <body>
-    <h1 class="imdb-title">IMDb99</h1>
-    <h2 class="a11y-hidden">MY PAGE</h2>
-    <nav>
-      <!-- <button onclick="signOut()">SIGN OUT</button> -->
-      <button onclick="handleSignOut()">SIGN OUT</button>
-      <button onclick="goToMainPage()">MAIN PAGE</button>
+    <nav class="imdb-nav">
+      <div class="userinfo-wrapper">
+        <span>{{user_info.username}}</span>
+        <span>({{user_info.email}})</span>
+      </div>
+      <h1 class="imdb-title" onclick="goToHome()">IMDb99</h1>
+      <h2 class="a11y-hidden">MY PAGE</h2>
+      <div class="navbtn-wrapper">
+        <button class="signout-btn" onclick="handleSignOut()">SIGN OUT</button>
+      </div>
     </nav>
-    <div>
+    <!-- MY PAGE --------------------------------------------------------------- -->
+    <div class="mymovie-wrapper">
       <ul class="mymovie-list"></ul>
     </div>
   </body>
+  <footer class="footer-container">
+    <div class="footer-wrapper">
+      <h1 class="imdb-footer-title">IMDb99</h1>
+      <div class="footer-info-container">
+        <span class="footer-info-message1"
+          >This is Sparta Coding Club Hanghae99 Project</span
+        >
+        <span class="footer-info-message2">
+          What is Hanghae99?
+          <a
+            class="footer-info-link"
+            href="https://spartacodingclub.kr/"
+            target="_blank"
+            >https://spartacodingclub.kr/</a
+          >
+        </span>
+        <span class="footer-info-message3"
+          >Reference |
+          <a
+            class="footer-info-link"
+            href="https://www.imdb.com/"
+            target="_blank"
+            >https://www.imdb.com/</a
+          ></span
+        >
+        <span class="footer-info-message4"
+          >Copyright © 2022 All rights reserved.</span
+        >
+      </div>
+      <ul class="github-list">
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/green9930"
+            target="_blank"
+          >
+            <img
+              src="../static/images/github-logo.svg"
+              alt="github-green9930"
+            />
+            <span class="author-name">GEUNA</span>
+          </a>
+        </li>
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/mrobo3"
+            target="_blank"
+          >
+            <img src="../static/images/github-logo.svg" alt="github-mrobo3" />
+            <span class="author-name">JUNGHOON</span>
+          </a>
+        </li>
+        <li class="github-item">
+          <a
+            class="github-link"
+            href="https://github.com/PhiloMonx1"
+            target="_blank"
+          >
+            <img
+              src="../static/images/github-logo.svg"
+              alt="github-PhiloMonx1"
+            />
+            <span class="author-name">TAEMIN</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
 </html>

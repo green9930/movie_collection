@@ -1,0 +1,90 @@
+.signin-container {
+  margin-top: 10rem;
+}
+
+.signin-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin-btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.signin-btn {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 0.7rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  -moz-transition: color 0.2s ease;
+  -o-transition: color 0.2s ease;
+  -ms-transition: color 0.2s ease;
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.signin-btn:hover,
+.signin-btn:focus {
+  color: #f5c518;
+  border: none;
+  outline: none;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  margin: 8rem 0;
+}
+
+.welcome-wrapper {
+  display: flex;
+  padding: 0.8rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-subwrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-message1 {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 2.4rem;
+}
+
+.imdb-welcome-title {
+  background-color: #f5c518;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: #000000;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  margin: 2rem 0 2rem 1.5rem;
+}
+
+.welcome-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+}
+
+.welcome-message2,
+.welcome-message3 {
+  font-size: 2rem;
+}
+
+.yellow_text {
+  color: #f5c518;
+  font-weight: 600;
+}
