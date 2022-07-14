@@ -3,6 +3,7 @@ html {
   font-size: 10px;
   overflow-y: visible;
   position: relative;
+  min-height: 100%;
 }
 
 /* 기본 박스사이징 설정 */
@@ -30,7 +31,7 @@ body {
   justify-content: center;
   height: auto;
   min-height: 100%;
-  padding-bottom: 40rem;
+  padding-bottom: 10rem;
 }
 
 /* a 요소 내 이미지에 발생하는 갭 제거, 블록안에 인라인 요소를 줬을 경우 갭을 위한 코드 */

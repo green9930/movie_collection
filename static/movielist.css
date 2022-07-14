@@ -1,8 +1,6 @@
-/* .main-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
+.main-wrapper {
+  margin: 3rem 0;
+}
 
 .movie-list {
   display: flex;

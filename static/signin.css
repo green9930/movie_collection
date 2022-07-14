@@ -1,5 +1,6 @@
 .signin-container {
-  margin-top: 10rem;
+  margin-top: 14rem;
+  margin-bottom: 4rem;
 }
 
 .signin-wrapper {
@@ -42,7 +43,10 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  background-color: #fff;
   margin: 8rem 0;
+  padding: 2rem 4rem 4rem 4rem;
+  border-radius: 1rem;
 }
 
 .welcome-wrapper {
@@ -58,19 +62,19 @@
 }
 
 .welcome-message1 {
-  color: #ffffff;
+  color: #000000;
   font-weight: 700;
   font-size: 2.4rem;
 }
 
 .imdb-welcome-title {
   background-color: #f5c518;
+  padding: 0 1rem;
+  margin: 2rem 0 2rem 1.5rem;
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   color: #000000;
-  padding: 0 1rem;
   border-radius: 1rem;
-  margin: 2rem 0 2rem 1.5rem;
 }
 
 .welcome-title {
@@ -82,9 +86,10 @@
 .welcome-message2,
 .welcome-message3 {
   font-size: 2rem;
+  color: #000000;
 }
 
 .yellow_text {
-  color: #f5c518;
+  color: #e27900;
   font-weight: 600;
 }
