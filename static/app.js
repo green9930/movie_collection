@@ -1,20 +1,15 @@
-/* JS 연결 확인 ----------------------------------------------------------------- */
-const test = () => {
-  console.log('JavaScript connected!');
-};
-
-/* app.js ------------------------------------------------------------------- */
 $(document).ready(() => {
-  // 페이지 로딩 후 바로 들어오는 GET 함수는 이곳에서 호출
   fetchData(POPULAR_MOVIES);
 });
 
+/* GO TO HOME --------------------------------------------------------------- */
 const goToHome = () => {
   window.location.href = '/';
 };
 
 /* SIGN IN ------------------------------------------------------------------ */
 
+/* GO TO SIGN IN ------------------------------------------------------------ */
 const goToSignIn = () => {
   window.location.href = '/signin';
 };
@@ -36,7 +31,6 @@ function sign_in() {
         password_give: $passwordin.value,
       },
       success: function (response) {
-        console.log(response.result);
         if (response['result'] === 'success') {
           $.cookie('mytoken', response['mytoken'], { path: '/' });
           window.location.replace('/');
@@ -49,6 +43,8 @@ function sign_in() {
 }
 
 /* SIGN UP ------------------------------------------------------------------ */
+
+/* GO TO SIGN UP ------------------------------------------------------------ */
 const goToSignUp = () => {
   window.location.href = '/signup';
 };
@@ -70,6 +66,7 @@ let pwcheck = false;
 let namecheck = false;
 
 function sign_up() {
+  /* 이메일 유효성 검사 --------------------------------------------------------------- */
   if ($useremail.value === '') {
     $emailmsg.innerText = '이메일을 입력해주세요';
   } else if (!is_useremail($useremail.value)) {
@@ -79,6 +76,7 @@ function sign_up() {
     emailcheck = true;
   }
 
+  /* 닉네임 유효성 검사 --------------------------------------------------------------- */
   if ($username.value === '') {
     $namemsg.innerText = '닉네임을 입력해주세요';
   } else if (is_username($username.value)) {
@@ -90,6 +88,7 @@ function sign_up() {
     namecheck = true;
   }
 
+  /* 비밀번호 유효성 검사 -------------------------------------------------------------- */
   if ($password.value === '') {
     $pwmsg1.innerText = '비밀번호를 입력해주세요';
   } else if (!is_password($password.value)) {
@@ -98,6 +97,8 @@ function sign_up() {
   } else {
     $pwmsg1.innerText = '사용가능한 비밀번호 입니다.';
   }
+
+  /* 확인용 비밀번호 ----------------------------------------------------------------- */
   if ($password2.value === '') {
     $pwmsg2.innerText = '확인용 비밀번호를 입력해주세요';
   } else if ($password2.value !== $password.value) {
@@ -107,6 +108,7 @@ function sign_up() {
     pwcheck = true;
   }
 
+  /* SIGN UP REQUEST ---------------------------------------------------------- */
   if (emailcheck === true && pwcheck === true && namecheck === true) {
     $.ajax({
       type: 'POST',
@@ -145,6 +147,7 @@ function is_username2(asValue) {
   return regExp.test(asValue);
 }
 
+/* 비밀번호 확인 기능 --------------------------------------------------------------- */
 function view_pw(event) {
   $('.view-pw').empty();
   let target = event.parentElement.children[0];
@@ -168,6 +171,8 @@ const handleSignOut = () => {
 };
 
 /* MAIN PAGE ---------------------------------------------------------------- */
+
+/* GO TO MAIN PAGE ---------------------------------------------------------- */
 const goToMainPage = () => {
   window.location.href = '/';
 };
@@ -194,6 +199,7 @@ const fetchData = async (url) => {
   }
 };
 
+/* MAIN PAGE API 출력 ------------------------------------------------------------ */
 const setMovieList = (movies) => {
   $.ajax({
     type: 'GET',
@@ -255,6 +261,7 @@ $(document).on('click', '.isVisible', (e) => {
     e.target.classList.remove('isVisible');
 });
 
+/* MOVIE LIKE TOGGLE -------------------------------------------------------- */
 $(document).on('change', '.movie-like-btn', (e) => {
   const isLike = e.target.checked;
   isLike
@@ -269,6 +276,7 @@ $(document).on('change', '.movie-like-btn', (e) => {
   isLike ? handleAddLike(targetMovie) : handleDeleteLike(targetMovie);
 });
 
+/* ADD LIKE ----------------------------------------------------------------- */
 const handleAddLike = (targetMovie) => {
   $.ajax({
     type: 'POST',
@@ -277,12 +285,13 @@ const handleAddLike = (targetMovie) => {
       targetmovie_give: targetMovie,
     },
     success: (res) => {
-      console.log(res.message);
+      // console.log(res.message);
       fetchData(POPULAR_MOVIES);
     },
   });
 };
 
+/* DELETE LIKE -------------------------------------------------------------- */
 const handleDeleteLike = (targetMovie) => {
   $.ajax({
     type: 'DELETE',
@@ -291,17 +300,19 @@ const handleDeleteLike = (targetMovie) => {
       targetmovie_give: targetMovie,
     },
     success: (res) => {
-      console.log(res.message);
+      // console.log(res.message);
       fetchData(POPULAR_MOVIES);
     },
   });
 };
 
 /* MY PAGE ------------------------------------------------------------------ */
+/* GO TO MY PAGE ------------------------------------------------------------ */
 const goToMyPage = () => {
   window.location.href = '/mypage';
 };
 
+/* MY PAGE API 출력 ----------------------------------------------------------- */
 const setMyMovieList = (movies) => {
   $.ajax({
     type: 'GET',

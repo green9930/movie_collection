@@ -23,8 +23,6 @@ body {
   font-weight: 400;
   background-color: #2d2d2d;
   color: #ffffff;
-  /* color: white; */
-  /* margin: 0; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +39,6 @@ a img {
 
 button {
   cursor: pointer;
-  /* border: none; */
   padding: 0;
 }
 
