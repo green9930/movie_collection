@@ -2,7 +2,7 @@
 # 항해99 8기 D반 1조 : 1주차 미니프로젝트 : IMDb99
 ![KakaoTalk_Photo_2022-07-14-18-54-02](https://user-images.githubusercontent.com/104121549/178957407-828fe98c-f50d-4b77-880a-d0057dd249ea.png)
 
-# 와이어 프레임 : https://velog.io/@philomonx1/%ED%95%AD%ED%95%B4-99-8%EA%B8%B0-1%EC%A3%BC%EC%B0%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-D%EB%B0%98-1%EC%A1%B0-51lkxtz1
+##### 와이어 프레임 : https://velog.io/@philomonx1/%ED%95%AD%ED%95%B4-99-8%EA%B8%B0-1%EC%A3%BC%EC%B0%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-D%EB%B0%98-1%EC%A1%B0-51lkxtz1
 
 
 ## 팀원
