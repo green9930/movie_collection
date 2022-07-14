@@ -28,16 +28,21 @@ def home():
         user_info = db.users.find_one({"email": payload["id"]})
         return render_template("index.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("signin", message="Your login session has expired. Please try again."))
+        return redirect(url_for("signin"))
     except jwt.exceptions.DecodeError:
-        return redirect(url_for("signin", message="Your account information does not exist. Please try again."))
+        return redirect(url_for("signin"))
 
 
 # SIGN IN -------------------------------------------------------------------- #
 @app.route("/signin")
 def signin():
-    message = request.args.get("message")
-    return render_template("signin.html", message=message)
+    token_receive = request.cookies.get("mytoken")
+    if token_receive is not None:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["id"]})
+        return render_template("index.html", user_info=user_info)
+    else:
+        return render_template("signin.html")
 
 
 @app.route('/sign_in', methods=['POST'])
@@ -59,7 +64,7 @@ def sign_in():
         token = jwt.encode(payload, SECRET_KEY,
                            algorithm='HS256')
 
-        return jsonify({'result': 'success', 'token': token})
+        return jsonify({'result': 'success', 'mytoken': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})

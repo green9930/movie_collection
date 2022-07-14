@@ -38,7 +38,7 @@ function sign_in() {
       success: function (response) {
         console.log(response.result);
         if (response['result'] === 'success') {
-          $.cookie('mytoken', response['token'], { path: '/' });
+          $.cookie('mytoken', response['mytoken'], { path: '/' });
           window.location.replace('/');
         } else {
           alert(response['msg']);
@@ -162,7 +162,7 @@ function view_pw(event) {
 
 /* SIGN OUT ------------------------------------------------------------------ */
 const handleSignOut = () => {
-  $.removeCookie('token', { path: '/' });
+  $.removeCookie('mytoken', { path: '/' });
   alert('SUCCESS : SIGN OUT');
   window.location.href = '/signin';
 };
