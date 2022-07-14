@@ -1,0 +1,35 @@
+.imdb-nav {
+  background-color: #1a1a1a;
+  height: 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  position: relative;
+  padding: 4rem 0;
+  border-radius: 1rem;
+}
+
+.userinfo-wrapper {
+  margin-left: 4rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.navbtn-wrapper {
+  margin-right: 4rem;
+}
+
+.imdb-title {
+  background-color: #f5c518;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: #000000;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  margin: 4rem 0;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

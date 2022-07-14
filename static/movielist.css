@@ -1,8 +1,6 @@
-/* .main-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
+.main-wrapper {
+  margin: 3rem 0;
+}
 
 .movie-list {
   display: flex;
@@ -47,7 +45,6 @@
   opacity: 0;
   position: absolute;
   top: 5%;
-  /* color: #f5c518; */
 }
 
 .isVisible {
